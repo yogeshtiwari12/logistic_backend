@@ -55,7 +55,12 @@ export const login = async (req, res) => {
                 return res.json({ message: "token Error", error: error.message });
             }
 
-            res.cookie('token', token)
+            // res.cookie('token', token)
+            res.cookie('token', token, {
+    httpOnly: true,
+    secure: true, // Set to true since Render uses HTTPS
+    sameSite: 'None' // Allows cross-site cookies with HTTPS
+});
             res.json({
                 message: 'Logged in successfully',
                 user: {
