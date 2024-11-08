@@ -20,9 +20,9 @@ app.use(cookieParser())
 
 app.use(cors({
     origin: 'https://logistic-frontend-delta.vercel.app',
-    credentials: true,
-     sameSite: 'None', 
-  }));
+    credentials: true,  // Allows cookies to be sent with the request
+}));
+
 app.use(express.json())
 
 
