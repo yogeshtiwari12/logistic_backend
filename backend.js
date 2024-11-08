@@ -19,7 +19,7 @@ mongoose.connect("mongodb+srv://yt781703:oOMjOmEC0GNFf64L@cluster0.0szdh.mongodb
 app.use(cookieParser())
 
 app.use(cors({
-    origin: 'https://logistic-backend-mnqu.onrender.com',
+    origin: 'https://logistic-frontend-delta.vercel.app/',
     credentials: true,
   }));
 app.use(express.json())
