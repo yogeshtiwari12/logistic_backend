@@ -21,6 +21,7 @@ app.use(cookieParser())
 app.use(cors({
     origin: 'https://logistic-frontend-delta.vercel.app',
     credentials: true,
+     sameSite: 'None', 
   }));
 app.use(express.json())
 
