@@ -57,7 +57,7 @@ export const login = async (req, res) => {
             }
 
             res.cookie('token', token, {
-                httpOnly:true, // Only allow access via HTTP
+                // httpOnly:true, // Only allow access via HTTP
                 secure: true, 
                 sameSite: 'None' 
             });
@@ -132,15 +132,19 @@ export const getallusers = async (req, res) => {
 
 
 
-export const logout = (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(400).json({ message: "No token found" });
-  }
-  res.clearCookie('token');
-  return res.status(200).json({ message: "Logout successful" });
-};
 
+export const logout = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        if(!token){
+            return res.json({ message: "Token not found" });
+        }
+        res.clearCookie('token');
+        res.json({ message: "Logged out successfully" });
+    } catch (error) {
+        
+    }
+}
 
 export const deleteuser = async (req, res) => {
     try {
