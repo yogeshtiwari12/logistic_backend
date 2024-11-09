@@ -135,15 +135,13 @@ export const logout = async (req, res) => {
     try {
         const token = req.cookies.token;
         
-        if (!token) {
-            return res.status(400).json({ message: "Token not found" });
-        }
+       
 
-        // Clear the token cookie using the same options as when it was set
+        // Clear the token cookie with the same options as when it was set
         res.clearCookie('token', {
             httpOnly: true,
-            secure: true,  // Set true if in production over HTTPS
-            sameSite: 'None'
+            secure: true, // Use secure in production
+            sameSite:'None',
         });
         
         return res.json({ message: "Logged out successfully" });
@@ -152,7 +150,6 @@ export const logout = async (req, res) => {
         return res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-
 
 
 export const deleteuser = async (req, res) => {
