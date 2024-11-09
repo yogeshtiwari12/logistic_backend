@@ -131,24 +131,14 @@ export const getallusers = async (req, res) => {
 }
 
 
-export const logout = async (req, res) => {
-    try {
-        const token = req.cookies.token;
-        
-       
 
-        // Clear the token cookie with the same options as when it was set
-        res.clearCookie('token', {
-            httpOnly: true,
-            secure: true, // Use secure in production
-            sameSite:'None',
-        });
-        
-        return res.json({ message: "Logged out successfully" });
-    } catch (error) {
-        console.error("Logout failed:", error.message);
-        return res.status(500).json({ message: "Server error", error: error.message });
-    }
+export const logout = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(400).json({ message: "No token found" });
+  }
+  res.clearCookie('token');
+  return res.status(200).json({ message: "Logout successful" });
 };
 
 
