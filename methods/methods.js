@@ -1,5 +1,6 @@
 import Model from '../model/model.js'
 import bcrypt from "bcrypt";
+
 import jwt from "jsonwebtoken"
 const jwtkey = "abcdefghijklmnopqrstuvwxyz12345"
 
@@ -55,11 +56,11 @@ export const login = async (req, res) => {
                 return res.json({ message: "token Error", error: error.message });
             }
 
-            // res.cookie('token', token)
             res.cookie('token', token, {
-    // secure: true, // Set to true since Render uses HTTPS
-    sameSite: 'None' // Allows cross-site cookies with HTTPS
-});
+                httpOnly:true, // Only allow access via HTTP
+                secure: true, 
+                sameSite: 'None' 
+            });
             res.json({
                 message: 'Logged in successfully',
                 user: {
@@ -133,15 +134,25 @@ export const getallusers = async (req, res) => {
 export const logout = async (req, res) => {
     try {
         const token = req.cookies.token;
-        if(!token){
-            return res.json({ message: "Token not found" });
-        }
-        res.clearCookie('token');
-        res.json({ message: "Logged out successfully" });
-    } catch (error) {
         
+        if (!token) {
+            return res.status(400).json({ message: "Token not found" });
+        }
+
+        // Clear the token cookie using the same options as when it was set
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,  // Set true if in production over HTTPS
+            sameSite: 'None'
+        });
+        
+        return res.json({ message: "Logged out successfully" });
+    } catch (error) {
+        console.error("Logout failed:", error.message);
+        return res.status(500).json({ message: "Server error", error: error.message });
     }
-}
+};
+
 
 
 export const deleteuser = async (req, res) => {
