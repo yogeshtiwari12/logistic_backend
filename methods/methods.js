@@ -57,7 +57,6 @@ export const login = async (req, res) => {
 
             // res.cookie('token', token)
             res.cookie('token', token, {
-    httpOnly: true,
     secure: true, // Set to true since Render uses HTTPS
     sameSite: 'None' // Allows cross-site cookies with HTTPS
 });
