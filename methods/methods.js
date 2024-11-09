@@ -139,7 +139,8 @@ export const logout = async (req, res) => {
         if(!token){
             return res.json({ message: "Token not found" });
         }
-       res.clearCookie('token', { path: '/', httpOnly: true, sameSite: 'None' });
+              res.clearCookie('token', {expires: new Date(0), path: '/' });
+
         res.json({ message: "Logged out successfully" });
     } catch (error) {
         
