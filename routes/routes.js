@@ -7,7 +7,7 @@ route.post('/signup',signup);
 route.post('/login',login)
 route.get('/getmyprofile',verifytoken,getmyprofile)
 route.get('/getallusers',verifytoken,isAdmin("admin"),getallusers)
-route.post('/logout',logout,verifytoken)
+route.post('/logout',verifytoken,logout)
 route.delete('/deleteuser/:id',verifytoken,isAdmin("admin"),deleteuser)
 
 
