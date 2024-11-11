@@ -16,14 +16,15 @@ mongoose.connect("mongodb+srv://yt781703:oOMjOmEC0GNFf64L@cluster0.0szdh.mongodb
     console.log("error connecting to the database", error.message);
 })
 
-app.use(cookieParser())
+app.use(cookieParser());
+app.use(express.json());
 
 app.use(cors({
-    origin: 'https://logistic-frontend-delta.vercel.app',
+    origin: 'https://logistic-frontend-nine.vercel.app',
     credentials: true,  // Allows cookies to be sent with the request
 }));
 
-app.use(express.json())
+
 
 
   app.use('/userroutes1', userroutes)
