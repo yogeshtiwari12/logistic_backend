@@ -145,8 +145,8 @@ export const logout = async (req, res) => {
             httpOnly: true,
             // secure: process.env.NODE_ENV === 'production', // Same as when setting the cookie
             sameSite: 'None', // Same as when setting the cookie
-            path: '/',  // Make sure the path matches
-            expires: new Date(0),  // Expire the cookie immediately
+            path: '/'  // Make sure the path matches
+            // Expire the cookie immediately
         });
 
         res.json({ message: "Logged out successfully" });
