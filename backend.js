@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
-    origin: 'https://logistic-frontend-nine.vercel.app',
+    origin: ' https://logistic-frontend-git-main-yogeshtiwari12s-projects.vercel.app',
     credentials: true,  // Allows cookies to be sent with the request
 }));
 
