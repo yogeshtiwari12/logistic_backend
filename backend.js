@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 app.use(express.json())
 
-mongoose.connect("mongodb://localhost:27017/logistic",{
+mongoose.connect("mongodb+srv://yt781703:oOMjOmEC0GNFf64L@cluster0.0szdh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",{
 
 }).then(()=>{
     console.log("coonected to the database",mongoose.connection.db.databaseName);
@@ -22,7 +22,7 @@ app.use(cookieParser())
 
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://logistic-frontend-git-main-yogeshtiwari12s-projects.vercel.app',
     credentials: true,
   }));
 
