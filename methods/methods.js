@@ -2,7 +2,7 @@ import Model from '../model/model.js'
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 const jwtkey = "abcdefghijklmnopqrstuvwxyz12345"
-
+import Model2  from "../model/model2.js";
 
 export const signup = async (req, res) => {
     const { name, email,phone, password, role } = req.body;
@@ -29,12 +29,13 @@ export const signup = async (req, res) => {
 }
 
 
-
-
 export const login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required.' });
+          }
         const user = await Model.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: "User not found" });
@@ -55,7 +56,11 @@ export const login = async (req, res) => {
                 return res.json({ message: "token Error", error: error.message });
             }
 
-            res.cookie('token', token)
+            res.cookie('token', token, {
+                //localhost ka code
+                secure: true, // Set to true since Render uses HTTPS
+                sameSite: 'None' // Allows cross-site cookies with HTTPS
+            });
             res.json({
                 message: 'Logged in successfully',
                 user: {
@@ -129,16 +134,24 @@ export const getallusers = async (req, res) => {
 export const logout = async (req, res) => {
     try {
         const token = req.cookies.token;
-        if(!token){
-            return res.json({ message: "Token not found" });
+        if (!token) {
+            return res.status(400).json({ message: "Token not found" });
         }
-        res.clearCookie('token');
+
+        // Clear the cookie with the same settings as when it was set
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None',
+            path: '/'
+        });
+
         res.json({ message: "Logged out successfully" });
     } catch (error) {
-        
+        console.error("Error during logout:", error);
+        res.status(500).json({ message: "Server error during logout" });
     }
-}
-
+};
 
 export const deleteuser = async (req, res) => {
     try {
@@ -151,4 +164,45 @@ export const deleteuser = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
+}
+
+
+
+
+export const ratereq = async(req, res) => {
+    const {name,email,comment,terms } = req.body;
+
+try {
+    if(!name || !email || !comment || !terms) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
+     const ratedata = new Model2({
+        name: name,
+        email: email,
+        comment: comment,
+        terms: terms,
+     })
+
+     await ratedata.save();
+     res.status(201).json({ message: "Request submitted successfully", request: ratedata });
+
+} catch (error) {
+    console.error("Error saving request:", error);
+    res.status(500).json({ message: "Failed to submit request", error: error.message });
+    
+}
+}
+
+export const ratedata = async(req,res)=>{
+    try {
+        const ratedata = await Model2.find();
+        if(!ratedata){
+            return res.status(404).json({ message: "No requests found" });
+        }
+        res.json({ message: "All requests fetched successfully", requests: ratedata });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+
 }
