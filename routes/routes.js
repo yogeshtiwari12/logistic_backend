@@ -1,6 +1,6 @@
 import express from 'express';
 const route = express.Router();
-import { deleteuser, getallusers, getmyprofile, login, logout, ratedata, ratereq, signup } from '../methods/methods.js';
+import { deleteuser, getallclientbrief, getallusers, getmyprofile, login, logout, ratedata, ratereq, saveclientbrief, signup } from '../methods/methods.js';
 import { isAdmin, verifytoken } from '../auth/auth.js';
 
 route.post('/signup',signup);
@@ -11,6 +11,8 @@ route.post('/logout',verifytoken,logout)
 route.delete('/deleteuser/:id',verifytoken,isAdmin("admin"),deleteuser)
 route.put('/ratereq',ratereq)
 route.get('/reqdata',ratedata)
+route.put('/saveclientbrief',saveclientbrief)
+route.get('/allclientdata',getallclientbrief)
 
 
 

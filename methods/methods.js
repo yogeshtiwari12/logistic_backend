@@ -1,8 +1,10 @@
 import Model from '../model/model.js'
 import bcrypt from "bcrypt";
+
 import jwt from "jsonwebtoken"
 const jwtkey = "abcdefghijklmnopqrstuvwxyz12345"
 import Model2  from "../model/model2.js";
+import Model3 from "../model/model3.js";
 
 export const signup = async (req, res) => {
     const { name, email,phone, password, role } = req.body;
@@ -59,7 +61,10 @@ export const login = async (req, res) => {
             res.cookie('token', token, {
                 //localhost ka code
                 secure: true, // Set to true since Render uses HTTPS
-                sameSite: 'None' // Allows cross-site cookies with HTTPS
+                sameSite: 'None', // Allows cross-site cookies with HTTPS
+                httpOnly: true,
+                secure: true, // Render uses HTTPS
+                sameSite: 'None',
             });
             res.json({
                 message: 'Logged in successfully',
@@ -131,6 +136,8 @@ export const getallusers = async (req, res) => {
 }
 
 
+
+
 export const logout = async (req, res) => {
     try {
         const token = req.cookies.token;
@@ -141,9 +148,11 @@ export const logout = async (req, res) => {
         // Clear the cookie with the same settings as when it was set
         res.clearCookie('token', {
             httpOnly: true,
+
             secure: true,
             sameSite: 'None',
             path: '/'
+ 
         });
 
         res.json({ message: "Logged out successfully" });
@@ -205,4 +214,117 @@ export const ratedata = async(req,res)=>{
         res.status(500).json({ message: "Server error", error: error.message });
     }
 
+}
+
+
+
+
+
+export const saveclientbrief = async (req, res) => {
+  try {
+    // Destructure all fields from req.body
+    const {
+      clientName,
+      brandName,
+      address,
+      phone,
+      cell,
+      emailAddress,
+      website,
+      socialMedia,
+      legalRepresentative,
+      products,
+      productOrigin,
+      tariffRegistration,
+      corporateColors,
+      partnersAffiliates,
+      certifications,
+      objective,
+      competitors,
+      productPresentation,
+      requireSamples,
+      marketStudies,
+      paymentContact,
+      dunsBrands,
+      idCopy,
+      productToExport,
+      referenceNumber,
+      pgCode,
+      purchaseName,
+    } = req.body;
+
+    // Validate required fields
+    if (
+      !clientName ||
+      !brandName ||
+      !address ||
+      !phone ||
+      !cell ||
+      !emailAddress ||
+      !website ||
+      !productPresentation ||
+      typeof requireSamples === "undefined"
+    ) {
+      return res.status(400).json({
+        message: "All required fields must be filled.",
+      });
+    }
+
+    // Create a new instance of ClientBrief
+    const newClientBrief = new Model3({
+      clientName,
+      brandName,
+      address,
+      phone,
+      cell,
+      emailAddress,
+      website,
+      socialMedia,
+      legalRepresentative,
+      products,
+      productOrigin,
+      tariffRegistration,
+      corporateColors,
+      partnersAffiliates,
+      certifications,
+      objective,
+      competitors,
+      productPresentation,
+      requireSamples,
+      marketStudies,
+      paymentContact,
+      dunsBrands,
+      idCopy,
+      productToExport,
+      referenceNumber,
+      pgCode,
+      purchaseName,
+    });
+
+    // Save to the database
+    const savedClientBrief = await newClientBrief.save();
+
+    res.status(201).json({
+      message: "Client brief saved successfully.",
+      data: savedClientBrief,
+    });
+  } catch (error) {
+    res.status(500).json({"error": error.message})
+
+
+  }
+};
+
+
+
+export const getallclientbrief = async (req, res) => {
+    try {
+        const allclientbrief = await Model3.find();
+        if(!allclientbrief){
+            return res.status(404).json({ message: "No client briefs found" });
+        }
+        res.json({ message: "All client briefs fetched successfully", clientbriefs: allclientbrief });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
 }

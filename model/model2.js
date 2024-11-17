@@ -19,7 +19,6 @@ const ratemodel  = mongoose.Schema({
         required: true
     }
     
-
 })
 
 export const Req = mongoose.model('Req',ratemodel)
