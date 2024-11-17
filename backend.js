@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 app.use(express.json())
 
-mongoose.connect("mongodb://localhost:27017/logistic",{
+mongoose.connect("mongodb://localhost:27017/logistics",{
 
 }).then(()=>{
     console.log("coonected to the database",mongoose.connection.db.databaseName);
@@ -23,7 +23,6 @@ app.use(express.json());
 
 
 app.use(cors({
-
     origin: 'http://localhost:3000',
     credentials: true,
   }));

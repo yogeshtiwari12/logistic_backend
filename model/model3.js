@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 const clientBriefSchema = new mongoose.Schema(
   {
-    // General Information
     clientName: {
       type: String,
       required: true,
